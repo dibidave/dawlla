@@ -1,0 +1,36 @@
+{
+  "name": "dawlla",
+  "version": "0.1.0",
+  "description": "Dijible finances web server",
+  "main": "bin/server.js",
+  "bin": {
+    "dawlla": "server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "bootswatch": "^4.0.0",
+    "bower": "^1.8.4",
+    "cookie-parser": "^1.4.3",
+    "dateformat": "^3.0.3",
+    "dijible-lib": "^0.1.0",
+    "express": "^4.16.3",
+    "flatpickr": "^4.4.4",
+    "jquery": "^3.3.1",
+    "moment": "^2.22.0",
+    "select2": "^4.0.6-rc.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dibidave/dawlla.git"
+  },
+  "author": "David Brown",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dibidave/dawlla/issues"
+  },
+  "homepage": "https://github.com/dibidave/dawlla#readme"
+}
