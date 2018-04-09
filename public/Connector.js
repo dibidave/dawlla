@@ -134,3 +134,29 @@ Connector.prototype.get_transactions = function() {
 
   return promise;
 };
+
+Connector.prototype.get_session = function() {
+
+  var URL = this.base_URL + "/session";
+
+  var promise = get_URL(URL)
+    .then(function(response) {
+      return response.session;
+    });
+
+  return promise;
+};
+
+Connector.prototype.post_login = function(username, password) {
+
+  var URL = this.base_URL + "/login";
+
+  var promise = post_URL(URL, {
+    username: username,
+    password: password
+  }).then(function(response) {
+    return response;
+  });
+
+  return promise;
+};

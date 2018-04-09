@@ -145,6 +145,13 @@ var post_transaction = function(request, response) {
   });
 };
 
+var get_session = function(request, response) {
+
+  return response.json({
+    session: request.session
+  });
+};
+
 router.get("/", get_home_page);
 router.post("/accounts", post_account);
 router.get("/accounts", get_accounts);
@@ -154,5 +161,5 @@ router.post("/legal_entities", post_legal_entity);
 router.get("/legal_entities", get_legal_entities);
 router.post("/transactions", post_transaction);
 router.get("/transactions", get_transactions);
-
+router.get("/session", get_session);
 module.exports = router;
