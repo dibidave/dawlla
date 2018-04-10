@@ -4,10 +4,11 @@ var routes = require("./routes");
 var cookie_parser = require("cookie-parser");
 var body_parser = require("body-parser");
 var path = require("path");
-var User = require("./User");
+var User = require("dijible-lib/User");
 var express_session = require("express-session");
 var passport = require("passport");
 var Passport_Strategy = require("passport-local").Strategy;
+var logger = require("dijible-lib/util/logger").get_logger("app");
 
 var app = express();
 
@@ -17,6 +18,8 @@ app.use(express_session({
 
 passport.use(new Passport_Strategy(
   function(username, password, callback) {
+  logger.info("Using passport strategy");
+
     User.get_user_by_credentials(username, password)
     .then(function(user) {
       if(user === null) {

@@ -9,15 +9,28 @@ var Category = require("./Category");
 var Legal_Entity = require("./Legal_Entity");
 var Transaction = require("./Transaction");
 
+var is_authenticated = function(request, response, next) {
+
+  if(request.isAuthenticated()) {
+    return next();
+  }
+  else {
+    logger.warn("OMG Y U ACCESS THIS, CLICKY THE BUTTONS");
+    response.redirect("/");
+  }
+}
+
 var get_home_page = function(request, response, next) {
   response.render("index", { title: "Express" });
 };
 
 var post_account = function(request, response) {
 
+  var user_id = request.session.passport.user;
+
   var account_name = request.body.name;
 
-  var account = Account.create_account(account_name);
+  var account = Account.create_account(user_id, account_name);
 
   account.save()
   .then(function() {
@@ -31,7 +44,9 @@ var post_account = function(request, response) {
 
 var get_accounts = function(request, response) {
 
-  Account.get_accounts()
+  var user_id = request.session.passport.user;
+
+  Account.get_accounts(user_id)
   .then(function(accounts) {
     var JSON_objects = [];
 
@@ -49,9 +64,11 @@ var get_accounts = function(request, response) {
 
 var post_category = function(request, response) {
 
+  var user_id = request.session.passport.user;
+
   var category_name = request.body.name;
 
-  var category = Category.create_category(category_name);
+  var category = Category.create_category(user_id, category_name);
 
   category.save()
   .then(function() {
@@ -65,7 +82,9 @@ var post_category = function(request, response) {
 
 var get_categories = function(request, response) {
 
-  Category.get_categories()
+  var user_id = request.session.passport.user;
+
+  Category.get_categories(user_id)
   .then(function(categories) {
     var JSON_objects = [];
 
@@ -83,9 +102,12 @@ var get_categories = function(request, response) {
 
 var post_legal_entity = function(request, response) {
 
+  var user_id = request.session.passport.user;
+
   var legal_entity_name = request.body.name;
 
-  var legal_entity = Legal_Entity.create_legal_entity(legal_entity_name);
+  var legal_entity = Legal_Entity.create_legal_entity(user_id,
+    legal_entity_name);
 
   legal_entity.save()
   .then(function() {
@@ -99,7 +121,9 @@ var post_legal_entity = function(request, response) {
 
 var get_legal_entities = function(request, response) {
 
-  Legal_Entity.get_legal_entities()
+  var user_id = request.session.passport.user;
+
+  Legal_Entity.get_legal_entities(user_id)
   .then(function(legal_entities) {
 
     var JSON_objects = [];
@@ -118,7 +142,9 @@ var get_legal_entities = function(request, response) {
 
 var get_transactions = function(request, response) {
 
-  Transaction.get_transactions()
+  var user_id = request.session.passport.user;
+
+  Transaction.get_transactions(user_id)
   .then(function(transactions) {
 
     var JSON_objects = [];
@@ -138,7 +164,9 @@ var get_transactions = function(request, response) {
 
 var post_transaction = function(request, response) {
 
-  var transaction = Transaction.create_transaction(request.body);
+  var user_id = request.session.passport.user;
+
+  var transaction = Transaction.create_transaction(user_id, request.body);
   transaction.save()
   .then(function(transaction) {
     return response.json({transaction: transaction});
@@ -152,14 +180,15 @@ var get_session = function(request, response) {
   });
 };
 
-router.get("/", get_home_page);
-router.post("/accounts", post_account);
-router.get("/accounts", get_accounts);
-router.post("/categories", post_category);
-router.get("/categories", get_categories);
-router.post("/legal_entities", post_legal_entity);
-router.get("/legal_entities", get_legal_entities);
-router.post("/transactions", post_transaction);
-router.get("/transactions", get_transactions);
+router.get("/", is_authenticated, get_home_page);
+router.post("/accounts", is_authenticated, post_account);
+router.get("/accounts", is_authenticated, get_accounts);
+router.post("/categories", is_authenticated, post_category);
+router.get("/categories", is_authenticated, get_categories);
+router.post("/legal_entities", is_authenticated, post_legal_entity);
+router.get("/legal_entities", is_authenticated, get_legal_entities);
+router.post("/transactions", is_authenticated, post_transaction);
+router.get("/transactions", is_authenticated, get_transactions);
 router.get("/session", get_session);
+
 module.exports = router;

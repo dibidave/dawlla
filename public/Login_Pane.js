@@ -32,7 +32,8 @@ function Login_Pane(parent_div, connector) {
   this.password_field = document.createElement("input");
   this.password_field.className = "form-control";
   this.password_field.type = "password"
-  this.password_field.autocomplete = "off"
+  this.password_field.autocomplete = "off";
+
   this.password_div.appendChild(this.password_field);
 
   this.login_fieldset.appendChild(this.password_div);
@@ -52,6 +53,8 @@ function Login_Pane(parent_div, connector) {
 };
 
 Login_Pane.prototype.login_button_clicked = function() {
+
+  console.log("Login button clicked");
 
   this.connector.post_login(this.username_field.value,
     this.password_field.value)

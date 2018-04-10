@@ -7,9 +7,10 @@ const Account = {
 
 };
 
-exports.create_account = function(name, balance, available_balance) {
+exports.create_account = function(user_id, name, balance, available_balance) {
 
-  var account = Database_Object.create_database_object(collection_name);
+  var account = Database_Object.create_database_object(
+    user_id, collection_name);
   Object.assign(account, Account);
 
   account.name = name;
@@ -31,9 +32,9 @@ exports.create_account = function(name, balance, available_balance) {
   return account;
 };
 
-exports.get_accounts = function() {
+exports.get_accounts = function(user_id) {
 
-  var promise = database.get_objects(collection_name)
+  var promise = database.get_objects(user_id, collection_name)
   .then(function(accounts_JSON) {
 
     var accounts = [];
@@ -41,7 +42,7 @@ exports.get_accounts = function() {
     for(var account_index = 0; account_index < accounts_JSON.length;
       account_index++) {
 
-      var account = exports.create_account();
+      var account = exports.create_account(user_id);
       account.from_JSON(accounts_JSON[account_index]);
 
       accounts.push(account);
@@ -53,12 +54,12 @@ exports.get_accounts = function() {
   return promise;
 };
 
-exports.get_account_by_id = function(account_id) {
+exports.get_account_by_id = function(user_id, account_id) {
 
-  var promise = database.get_object_by_id(collection_name, account_id)
+  var promise = database.get_object_by_id(user_id, collection_name, account_id)
   .then(function(account_JSON) {
 
-    var account = exports.create_account();
+    var account = exports.create_account(user_id);
     account.from_JSON(account_JSON);
 
     return account;

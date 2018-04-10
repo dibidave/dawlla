@@ -7,9 +7,10 @@ const Category = {
 
 };
 
-exports.create_category = function(name) {
+exports.create_category = function(user_id, name) {
 
-  var category = Database_Object.create_database_object(collection_name);
+  var category = Database_Object.create_database_object(user_id,
+    collection_name);
   Object.assign(category, Category);
 
   category.name = name;
@@ -17,9 +18,9 @@ exports.create_category = function(name) {
   return category;
 };
 
-exports.get_categories = function() {
+exports.get_categories = function(user_id) {
 
-  var promise = database.get_objects(collection_name)
+  var promise = database.get_objects(user_id, collection_name)
   .then(function(cagegories_JSON) {
 
     var categories = [];

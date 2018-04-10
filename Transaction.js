@@ -24,7 +24,8 @@ const Transaction = {
     var original_object = null;
 
     if(this._id !== undefined) {
-      promise = database.get_object_by_id(collection_name, this._id)
+      promise = database.get_object_by_id(this._metadata.user_id,
+        collection_name, this._id)
       .then(function(response) {
         original_object = response;
       });
@@ -35,7 +36,8 @@ const Transaction = {
       return Database_Object.Database_Object.save.call(this);
     }.bind(this))
     .then(function() {
-      return Account.get_account_by_id(this.account_id);
+      return Account.get_account_by_id(this._metadata.user_id, 
+        this.account_id);
     }.bind(this))
     .then(function(account) {
     
@@ -82,9 +84,10 @@ const Transaction = {
 
 };
 
-exports.create_transaction = function(transaction_JSON) {
+exports.create_transaction = function(user_id, transaction_JSON) {
 
-  var transaction = Database_Object.create_database_object(collection_name);
+  var transaction = Database_Object.create_database_object(user_id,
+    collection_name);
   Object.assign(transaction, Transaction);
 
   transaction.deleted_on = null;
@@ -94,7 +97,7 @@ exports.create_transaction = function(transaction_JSON) {
   return transaction;
 };
 
-exports.get_transactions = function() {
+exports.get_transactions = function(user_id) {
 
   var not_deleted_filter = {
     deleted_on: {
@@ -102,7 +105,8 @@ exports.get_transactions = function() {
     }
   };
 
-  var promise = database.get_objects(collection_name, not_deleted_filter)
+  var promise = database.get_objects(user_id, collection_name,
+    not_deleted_filter)
   .then(function(transactions_JSON) {
 
     var transactions = [];
@@ -110,7 +114,7 @@ exports.get_transactions = function() {
     for(var transaction_index = 0; transaction_index < transactions_JSON.length;
       transaction_index++) {
 
-      var transaction = exports.create_transaction();
+      var transaction = exports.create_transaction(user_id);
       transaction.from_JSON(transactions_JSON[transaction_index]);
 
       transactions.push(transaction);
