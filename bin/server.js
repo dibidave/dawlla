@@ -4,10 +4,11 @@ var logger = require("dijible-lib/util/logger").init_logger("server");
 var app = require("../app");
 var database = require("dijible-lib/connectors/database");
 var config = require("../config/config");
+var fs = require("fs");
 
-port = config.port;
-key_file_path = config.key_file_path;
-certificate_file_path = config.certificate_file_path;
+var port = config.port;
+var key_file_path = config.key_file_path;
+var certificate_file_path = config.certificate_file_path;
 
 app.set("port", port);
 
@@ -55,7 +56,6 @@ Promise.all(connection_promises)
     server = http.createServer(app);
   }
 
-  server = http.createServer(app);
   server.listen(port);
   server.on("listening", on_listening);
 }).catch(function(error) {
