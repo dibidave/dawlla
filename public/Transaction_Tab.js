@@ -48,7 +48,8 @@ Transaction_Tab.prototype.generate_add_transaction_div = function() {
   this.transaction_date_field.className = "col-sm-6";
   this.transaction_date_picker = flatpickr(this.transaction_date_field,
     {
-      defaultDate: new Date()
+      defaultDate: new Date(),
+      disableMobile: true
     }
   );
 
