@@ -135,6 +135,29 @@ Connector.prototype.get_transactions = function() {
   return promise;
 };
 
+Connector.prototype.post_transfer = function(transfer) {
+  var URL = this.base_URL + "/transfers";
+
+  var promise = post_URL(URL, transfer)
+    .then(function(response) {
+      return response.transfer;
+    });
+
+  return promise;
+
+};
+
+Connector.prototype.get_transfers = function() {
+  var URL = this.base_URL + "/transfers";
+
+  var promise = get_URL(URL)
+    .then(function(response) {
+      return response.transfers;
+    });
+
+  return promise;
+};
+
 Connector.prototype.get_session = function() {
 
   var URL = this.base_URL + "/session";

@@ -8,6 +8,7 @@ var Account = require("./Account");
 var Category = require("./Category");
 var Legal_Entity = require("./Legal_Entity");
 var Transaction = require("./Transaction");
+var Transfer = require("./Transfer");
 
 var is_authenticated = function(request, response, next) {
 
@@ -173,6 +174,39 @@ var post_transaction = function(request, response) {
   });
 };
 
+var get_transfers = function(request, response) {
+
+  var user_id = request.session.passport.user;
+
+  Transfer.get_transfers(user_id)
+  .then(function(transfers) {
+
+    var JSON_objects = [];
+
+    for(var transfer_index = 0; transfer_index < transfers.length;
+      transfer_index++) {
+      var transfer = transfers[transfer_index].to_JSON();
+      JSON_objects.push(transfer);
+    }
+
+    return response.json({
+      transfers: JSON_objects
+    });
+
+  });
+};
+
+var post_transfer = function(request, response) {
+
+  var user_id = request.session.passport.user;
+
+  var transfer = Transfer.create_transfer(user_id, request.body);
+  transfer.save()
+  .then(function(transfer) {
+    return response.json({transfer: transfer});
+  });
+};
+
 var get_session = function(request, response) {
 
   return response.json({
@@ -189,6 +223,8 @@ router.post("/legal_entities", is_authenticated, post_legal_entity);
 router.get("/legal_entities", is_authenticated, get_legal_entities);
 router.post("/transactions", is_authenticated, post_transaction);
 router.get("/transactions", is_authenticated, get_transactions);
+router.post("/transfers", is_authenticated, post_transfer);
+router.get("/transfers", is_authenticated, get_transfers);
 router.get("/session", get_session);
 
 module.exports = router;
