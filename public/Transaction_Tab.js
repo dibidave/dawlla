@@ -171,7 +171,10 @@ Transaction_Tab.prototype.generate_add_transaction_div = function() {
 
   this.transaction_post_date_field = document.createElement("input");
   this.transaction_post_date_field.className = "col-sm-6";
-  this.transaction_post_date_picker = flatpickr(this.transaction_post_date_field);
+  this.transaction_post_date_picker = flatpickr(this.transaction_post_date_field,
+    {
+      disableMobile: true
+    });
   this.transaction_post_date_row.appendChild(this.transaction_post_date_field);
 
   this.post_date_now_checkbox_div = document.createElement("div");
@@ -353,10 +356,18 @@ Transaction_Tab.prototype.add_transaction_clicked = function() {
     return this.connector.post_transaction(transaction_JSON);
   }.bind(this))
   .then(function(transaction) {
+
+    this.clear_fields();
     console.log(transaction);
     this.transactions.push(transaction);
     return this.update_transactions_table();
   }.bind(this));
+
+};
+
+Transaction_Tab.prototype.clear_fields = function() {
+
+  this.transaction_amount_field.value = "";
 
 };
 
@@ -501,7 +512,7 @@ Transaction_Tab.prototype.update_transactions_table = function() {
     row.appendChild(cell);
 
     var cell = document.createElement("td");
-    cell.innerHTML = transaction.amount;
+    cell.innerHTML = "$" + transaction.amount.toFixed(2);
     row.appendChild(cell);
 
     var cell = document.createElement("td");

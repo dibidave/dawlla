@@ -146,7 +146,10 @@ Transfer_Tab.prototype.generate_add_transfer_div = function() {
 
   this.transfer_post_date_field = document.createElement("input");
   this.transfer_post_date_field.className = "col-sm-6";
-  this.transfer_post_date_picker = flatpickr(this.transfer_post_date_field);
+  this.transfer_post_date_picker = flatpickr(this.transfer_post_date_field,
+    {
+      disableMobile: true
+    });
   this.transfer_post_date_row.appendChild(this.transfer_post_date_field);
 
   this.post_date_now_checkbox_div = document.createElement("div");
@@ -378,7 +381,7 @@ Transfer_Tab.prototype.update_transfers_table = function() {
     row.appendChild(cell);
 
     var cell = document.createElement("td");
-    cell.innerHTML = transfer.amount;
+    cell.innerHTML = "$" + transfer.amount.toFixed(2);
     row.appendChild(cell);
 
     var cell = document.createElement("td");

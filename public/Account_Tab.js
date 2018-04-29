@@ -119,11 +119,11 @@ Account_Tab.prototype.update_accounts_table = function() {
     row.appendChild(cell);
 
     cell = document.createElement("td");
-    cell.innerHTML = account.balance;
+    cell.innerHTML = "$" + account.balance.toFixed(2);
     row.appendChild(cell);
 
     cell = document.createElement("td");
-    cell.innerHTML = account.available_balance;
+    cell.innerHTML = "$" + account.available_balance.toFixed(2);
     row.appendChild(cell);
 
     this.accounts_table_body.appendChild(row);
