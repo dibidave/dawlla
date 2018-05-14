@@ -81,9 +81,8 @@ app.get("/logout",
 app.use("/", routes);
 
 app.use(function(req, res, next) {
-  var err = new Error("Not Found");
-  err.status = 404;
-  next(err);
+  logger.info("Attempted to access invalid URL, '" + req.url + "'");
+  res.status(404).send("Not Found");
 });
 
 module.exports = app;
