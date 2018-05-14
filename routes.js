@@ -29,9 +29,9 @@ var post_account = function(request, response) {
 
   var user_id = request.session.passport.user;
 
-  var account_name = request.body.name;
+  var account_JSON = request.body;
 
-  var account = Account.create_account(user_id, account_name);
+  var account = Account.create_account(user_id, account_JSON);
 
   account.save()
   .then(function() {

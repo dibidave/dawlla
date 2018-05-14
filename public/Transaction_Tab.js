@@ -358,7 +358,6 @@ Transaction_Tab.prototype.add_transaction_clicked = function() {
   .then(function(transaction) {
 
     this.clear_fields();
-    console.log(transaction);
     this.transactions.push(transaction);
     return this.update_transactions_table();
   }.bind(this));
@@ -368,7 +367,9 @@ Transaction_Tab.prototype.add_transaction_clicked = function() {
 Transaction_Tab.prototype.clear_fields = function() {
 
   this.transaction_amount_field.value = "";
-
+  this.transaction_description_field.value = "";
+  this.transaction_date_picker.setDate(new Date());
+  this.transaction_post_date_field = "";
 };
 
 Transaction_Tab.prototype.update_transactions = function() {
@@ -512,7 +513,7 @@ Transaction_Tab.prototype.update_transactions_table = function() {
     row.appendChild(cell);
 
     var cell = document.createElement("td");
-    cell.innerHTML = "$" + transaction.amount.toFixed(2);
+    cell.innerHTML = convert_number_to_dollars(transaction.amount);
     row.appendChild(cell);
 
     var cell = document.createElement("td");

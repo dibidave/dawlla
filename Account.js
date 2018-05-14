@@ -7,25 +7,19 @@ const Account = {
 
 };
 
-exports.create_account = function(user_id, name, balance, available_balance) {
+exports.create_account = function(user_id, account_JSON) {
 
   var account = Database_Object.create_database_object(
     user_id, collection_name);
   Object.assign(account, Account);
 
-  account.name = name;
+  account.from_JSON(account_JSON);
 
-  if(balance !== undefined) {
-    account.balance = balance;
-  }
-  else {
+  if(account.balance === undefined) {
     account.balance = 0;
   }
 
-  if(available_balance !== undefined) {
-    account.available_balance = available_balance;
-  }
-  else {
+  if(account.available_balance === undefined) {
     account.available_balance = 0;
   }
 
@@ -34,7 +28,8 @@ exports.create_account = function(user_id, name, balance, available_balance) {
 
 exports.get_accounts = function(user_id) {
 
-  var promise = database.get_objects(user_id, collection_name)
+  var promise = database.get_objects(user_id, collection_name,
+    {}, {"name": true})
   .then(function(accounts_JSON) {
 
     var accounts = [];
