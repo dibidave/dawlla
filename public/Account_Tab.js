@@ -102,10 +102,23 @@ Account_Tab.prototype.update_accounts_table = function() {
   cell.innerHTML = "Available";
   header_row.appendChild(cell);
 
+  cell = document.createElement("th");
+  cell.setAttribute("scope", "col");
+  cell.innerHTML = "Pending";
+  header_row.appendChild(cell);
+
+  cell = document.createElement("th");
+  cell.setAttribute("scope", "col");
+  cell.innerHTML = "Delete";
+  header_row.appendChild(cell);
+
   this.accounts_table_header.appendChild(header_row)
   this.accounts_table.appendChild(this.accounts_table_header);
 
   this.accounts_table_body = document.createElement("tbody");
+
+  var total_balance = 0;
+  var total_available_balance = 0;
 
   for(var account_index = 0; account_index < this.accounts.length;
     account_index++) {
@@ -119,16 +132,69 @@ Account_Tab.prototype.update_accounts_table = function() {
     row.appendChild(cell);
 
     cell = document.createElement("td");
-    cell.innerHTML = "$" + account.balance.toFixed(2);
+    cell.innerHTML = convert_number_to_dollars(account.balance);
+    row.appendChild(cell);
+    total_balance += account.balance;
+
+    cell = document.createElement("td");
+    cell.innerHTML = convert_number_to_dollars(account.available_balance);
+    row.appendChild(cell);
+    total_available_balance += account.available_balance;
+
+    var pending = account.balance - account.available_balance;
+    cell = document.createElement("td");
+    cell.innerHTML = convert_number_to_dollars(pending);
     row.appendChild(cell);
 
     cell = document.createElement("td");
-    cell.innerHTML = "$" + account.available_balance.toFixed(2);
+
+    var delete_button = document.createElement("button");
+    delete_button.className = "btn btn-primary";
+    delete_button.setAttribute("type","button");
+    delete_button.innerHTML = "X";
+    delete_button.addEventListener("click",
+      this.delete_account_clicked.bind(this, account));
+
+    cell.appendChild(delete_button);
     row.appendChild(cell);
 
     this.accounts_table_body.appendChild(row);
   }
 
+  var total_pending = total_balance - total_available_balance;
+
+  this.accounts_table_footer = document.createElement("tfoot");
+
+  var footer_row = document.createElement("tr");
+  var cell = document.createElement("th");
+  cell.innerHTML = "Total";
+  footer_row.appendChild(cell);
+
+  cell = document.createElement("th");
+  cell.innerHTML = convert_number_to_dollars(total_balance);
+  footer_row.appendChild(cell);
+
+  cell = document.createElement("th");
+  cell.innerHTML = convert_number_to_dollars(total_available_balance);
+  footer_row.appendChild(cell);
+
+  cell = document.createElement("th");
+  cell.innerHTML = convert_number_to_dollars(total_pending);
+  footer_row.appendChild(cell);
+
+  this.accounts_table_footer.appendChild(footer_row);
+  this.accounts_table.appendChild(this.accounts_table_footer);
+
   this.accounts_table.appendChild(this.accounts_table_body);
   this.accounts_table_div.appendChild(this.accounts_table);
+};
+
+Account_Tab.prototype.delete_account_clicked = function(account) {
+
+  account.deleted_on = new Date();
+
+  this.connector.post_account(account)
+  .then(function() {
+    this.update_accounts();
+  }.bind(this));
 };

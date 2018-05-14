@@ -512,7 +512,7 @@ Transaction_Tab.prototype.update_transactions_table = function() {
     row.appendChild(cell);
 
     var cell = document.createElement("td");
-    cell.innerHTML = "$" + transaction.amount.toFixed(2);
+    cell.innerHTML = convert_number_to_dollars(transaction.amount);
     row.appendChild(cell);
 
     var cell = document.createElement("td");

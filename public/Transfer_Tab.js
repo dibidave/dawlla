@@ -381,7 +381,7 @@ Transfer_Tab.prototype.update_transfers_table = function() {
     row.appendChild(cell);
 
     var cell = document.createElement("td");
-    cell.innerHTML = "$" + transfer.amount.toFixed(2);
+    cell.innerHTML = convert_number_to_dollars(transfer.amount);
     row.appendChild(cell);
 
     var cell = document.createElement("td");
