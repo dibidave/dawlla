@@ -115,7 +115,7 @@ exports.get_transfers = function(user_id) {
   };
 
   var promise = database.get_objects(user_id, collection_name,
-    not_deleted_filter)
+    not_deleted_filter, {"date": false})
   .then(function(transfers_JSON) {
 
     var transfers = [];

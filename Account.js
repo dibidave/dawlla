@@ -28,7 +28,8 @@ exports.create_account = function(user_id, account_JSON) {
 
 exports.get_accounts = function(user_id) {
 
-  var promise = database.get_objects(user_id, collection_name)
+  var promise = database.get_objects(user_id, collection_name,
+    {}, {"name": true})
   .then(function(accounts_JSON) {
 
     var accounts = [];

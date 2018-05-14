@@ -20,7 +20,8 @@ exports.create_category = function(user_id, name) {
 
 exports.get_categories = function(user_id) {
 
-  var promise = database.get_objects(user_id, collection_name)
+  var promise = database.get_objects(user_id, collection_name,
+    {}, {"name": true})
   .then(function(cagegories_JSON) {
 
     var categories = [];
