@@ -568,7 +568,12 @@ Transaction_Tab.prototype.update_transactions_table = function() {
 
 Transaction_Tab.prototype.post_transaction_clicked = function(transaction) {
 
-  transaction.post_date = new Date();
+  if(this.transaction_post_date_picker.selectedDates.length >= 1) {
+    transaction.post_date = this.transaction_post_date_picker.selectedDates[0];
+  }
+  else {
+    transaction.post_date = new Date();
+  }
 
   this.connector.post_transaction(transaction)
   .then(function() {
