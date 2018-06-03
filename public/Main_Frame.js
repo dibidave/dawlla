@@ -20,6 +20,8 @@ function Main_Frame(parent_div, connector) {
     this.connector);
   this.transaction_tab = new Transfer_Tab(this.nav_bar, this.tab_content,
     this.connector);
+  this.analysis_tab = new Analysis_Tab(this.nav_bar, this.tab_content,
+    this.connector);
 
   this.logout_tab = document.createElement("li");
   this.logout_tab.className = "nav-item";
