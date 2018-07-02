@@ -497,6 +497,10 @@ Transaction_Tab.prototype.update_transactions_table = function() {
 
     var transaction = this.transactions[transaction_index];
 
+    if(!(transaction.account_id in this.accounts_map)) {
+      continue;
+    }
+
     var row = document.createElement("tr");
     row.className = "table-active";
 
