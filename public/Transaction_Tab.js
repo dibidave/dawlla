@@ -359,7 +359,8 @@ Transaction_Tab.prototype.add_transaction_clicked = function() {
 
     this.clear_fields();
     this.transactions.push(transaction);
-    return this.update_transactions_table();
+    return Promise.all([this.update_transactions_table(), 
+      this.update_parties()]);
   }.bind(this));
 
 };
