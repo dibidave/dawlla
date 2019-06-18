@@ -1,5 +1,4 @@
 var express = require("express");
-var basicAuth = require("express-basic-auth");
 var routes = require("./routes");
 var cookie_parser = require("cookie-parser");
 var body_parser = require("body-parser");
@@ -29,7 +28,8 @@ passport.use(new Passport_Strategy(
         return callback(null, user);
       }
     });
-  }));
+  })
+);
 
 passport.serializeUser(function(user, callback) {
   callback(null, user._id);
