@@ -358,8 +358,20 @@ Transaction_Tab.prototype.add_transaction_clicked = function() {
   }.bind(this))
   .then(function(transaction) {
 
-    this.clear_fields();
-    this.transactions.push(transaction);
+    let transaction_date = new Date(transaction.date);
+
+    for(var transaction_index = 0; transaction_index < this.transactions.length;
+      transaction_index++) {
+
+      let date_at_insert_location =
+        new Date(this.transactions[transaction_index].date);
+
+      if(date_at_insert_location < transaction_date) {
+        this.transactions.splice(transaction_index, 0, transaction);
+        break;
+      }
+    }
+    
     return Promise.all([this.update_transactions_table(), 
       this.update_parties()]);
   }.bind(this));
@@ -390,6 +402,8 @@ Transaction_Tab.prototype.update_transactions = function() {
 
 Transaction_Tab.prototype.update_accounts_dropdown = function() {
 
+  $("#new_transaction_account_select").val(null).trigger("change");
+
   for(var account_index = 0; account_index < this.accounts.length;
     account_index++) {
 
@@ -403,6 +417,8 @@ Transaction_Tab.prototype.update_accounts_dropdown = function() {
 
 Transaction_Tab.prototype.update_categories_dropdown = function() {
 
+  $("#new_transaction_category_select").val(null).trigger("change");
+
   for(var category_index = 0; category_index < this.categories.length;
     category_index++) {
 
@@ -415,6 +431,8 @@ Transaction_Tab.prototype.update_categories_dropdown = function() {
 };
 
 Transaction_Tab.prototype.update_parties_dropdown = function() {
+
+  $("#new_transaction_party_select").empty().trigger("change");
 
   for(var party_index = 0; party_index < this.parties.length;
     party_index++) {
@@ -597,3 +615,4 @@ Transaction_Tab.prototype.delete_transaction_clicked = function(transaction) {
   }.bind(this));
 
 };
+
