@@ -125,6 +125,11 @@ Account_Tab.prototype.update_accounts_table = function() {
 
     var account = this.accounts[account_index];
 
+    if(account.deleted_on !== null)
+    {
+      continue;
+    }
+
     var row = document.createElement("tr");
     row.className = "table-active";
     var cell = document.createElement("td");

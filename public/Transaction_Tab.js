@@ -291,6 +291,7 @@ Transaction_Tab.prototype.add_transaction_clicked = function() {
     $('#new_transaction_party_select').find(':selected')[0].index;
   var selected_account_index = 
     $('#new_transaction_account_select').find(':selected')[0].index;
+
   var selected_category_index = 
     $('#new_transaction_category_select').find(':selected')[0].index;
 
