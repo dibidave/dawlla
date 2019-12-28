@@ -21,10 +21,6 @@ var is_authenticated = function(request, response, next) {
   }
 }
 
-var get_home_page = function(request, response, next) {
-  response.render("index", { title: "Express" });
-};
-
 var post_account = function(request, response) {
 
   var user_id = request.session.passport.user;
@@ -214,7 +210,6 @@ var get_session = function(request, response) {
   });
 };
 
-router.get("/", is_authenticated, get_home_page);
 router.post("/accounts", is_authenticated, post_account);
 router.get("/accounts", is_authenticated, get_accounts);
 router.post("/categories", is_authenticated, post_category);
