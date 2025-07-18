@@ -17,7 +17,7 @@
     "dijible-lib": "^0.1.0",
     "express": "^4.16.3",
     "express-basic-auth": "^1.1.4",
-    "express-session": "^1.15.6",
+    "express-session": "^1.18.2",
     "flatpickr": "^4.4.4",
     "https": "^1.0.0",
     "inquirer": "^5.2.0",
