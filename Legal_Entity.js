@@ -14,6 +14,7 @@ exports.create_legal_entity = function(user_id, name) {
   Object.assign(legal_entity, Legal_Entity);
 
   legal_entity.name = name;
+  legal_entity.external_names = "";
 
   return legal_entity;
 };

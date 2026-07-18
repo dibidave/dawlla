@@ -206,6 +206,15 @@ Transaction_Tab.prototype.generate_add_transaction_div = function() {
     this.add_transaction_clicked.bind(this));
 
   this.add_transaction_div.appendChild(this.add_transaction_button);
+
+  this.export_transactions_button = document.createElement("button");
+  this.export_transactions_button.className = "btn btn-primary mx-1";
+  this.export_transactions_button.setAttribute("type","button");
+  this.export_transactions_button.innerHTML = "Export CSV";
+  this.export_transactions_button.addEventListener("click",
+    this.export_transactions_clicked.bind(this));
+
+  this.add_transaction_div.appendChild(this.export_transactions_button);
   this.tab_content.appendChild(this.add_transaction_div);
 
   $(document).ready(function() {
@@ -216,6 +225,54 @@ Transaction_Tab.prototype.generate_add_transaction_div = function() {
         tags: true
       });
   });
+};
+
+Transaction_Tab.prototype.export_transactions_clicked = function() {
+
+  if(this.transactions === undefined || this.transactions.length === 0) {
+    alert("No transactions to export");
+    return;
+  }
+
+  var headers = [
+    "date",
+    "party",
+    "party_id",
+    "account",
+    "account_id",
+    "amount",
+    "category",
+    "category_id",
+    "description",
+    "post_date",
+    "id"
+  ];
+  var rows = [];
+
+  for(var transaction_index = 0; transaction_index < this.transactions.length;
+    transaction_index++) {
+
+    var transaction = this.transactions[transaction_index];
+    var party = this.parties_map[transaction.party_id];
+    var account = this.accounts_map[transaction.account_id];
+    var category = this.categories_map[transaction.category_id];
+
+    rows.push([
+      csv_date(transaction.date),
+      party ? party.name : "",
+      transaction.party_id,
+      account ? account.name : "",
+      transaction.account_id,
+      transaction.amount,
+      category ? category.name : "",
+      transaction.category_id,
+      transaction.description,
+      csv_date(transaction.post_date),
+      transaction._id
+    ]);
+  }
+
+  download_csv("transactions.csv", headers, rows);
 };
 
 Transaction_Tab.prototype.update_accounts = function() {
@@ -351,7 +408,8 @@ Transaction_Tab.prototype.add_transaction_clicked = function() {
       amount: amount,
       description: description,
       category_id: category._id,
-      post_date: post_date
+      post_date: post_date,
+      external_id: null
     };
 
     return this.connector.post_transaction(transaction_JSON);

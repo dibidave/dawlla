@@ -1,4 +1,5 @@
 config/config.json
+*.pem
 node_modules/
 bower_components/
 log/

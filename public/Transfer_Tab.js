@@ -181,11 +181,63 @@ Transfer_Tab.prototype.generate_add_transfer_div = function() {
     this.add_transfer_clicked.bind(this));
 
   this.add_transfer_div.appendChild(this.add_transfer_button);
+
+  this.export_transfers_button = document.createElement("button");
+  this.export_transfers_button.className = "btn btn-primary mx-1";
+  this.export_transfers_button.setAttribute("type","button");
+  this.export_transfers_button.innerHTML = "Export CSV";
+  this.export_transfers_button.addEventListener("click",
+    this.export_transfers_clicked.bind(this));
+
+  this.add_transfer_div.appendChild(this.export_transfers_button);
   this.tab_content.appendChild(this.add_transfer_div);
 
   $(document).ready(function() {
     $(".js-example-basic").select2({width: "100%"});
   });
+};
+
+Transfer_Tab.prototype.export_transfers_clicked = function() {
+
+  if(this.transfers === undefined || this.transfers.length === 0) {
+    alert("No transfers to export");
+    return;
+  }
+
+  var headers = [
+    "date",
+    "from_account",
+    "from_account_id",
+    "to_account",
+    "to_account_id",
+    "amount",
+    "description",
+    "post_date",
+    "id"
+  ];
+  var rows = [];
+
+  for(var transfer_index = 0; transfer_index < this.transfers.length;
+    transfer_index++) {
+
+    var transfer = this.transfers[transfer_index];
+    var from_account = this.accounts_map[transfer.from_account_id];
+    var to_account = this.accounts_map[transfer.to_account_id];
+
+    rows.push([
+      csv_date(transfer.date),
+      from_account ? from_account.name : "",
+      transfer.from_account_id,
+      to_account ? to_account.name : "",
+      transfer.to_account_id,
+      transfer.amount,
+      transfer.description,
+      csv_date(transfer.post_date),
+      transfer._id
+    ]);
+  }
+
+  download_csv("transfers.csv", headers, rows);
 };
 
 Transfer_Tab.prototype.update_accounts = function() {

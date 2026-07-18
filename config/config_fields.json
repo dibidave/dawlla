@@ -6,7 +6,7 @@
       "type":"input",
       "validate":"(function validateNumberMinMax(str) {if ( !isNaN(str) ){ if (parseFloat(str)>=100 &&parseFloat(str)<=99999 )return true; } return false;  })"
     },
-    "description": "The port on which to host the dijido web server"
+    "description": "The port on which to host the dawlla web server"
   },
   {
     "key": "insecure_port",
